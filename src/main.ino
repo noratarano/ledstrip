@@ -38,6 +38,9 @@ Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DOTSTAR_BRG);
 void setup() {
   strip.begin(); // Initialize pins for output
   strip.show();  // Turn all LEDs off ASAP
+
+  // Lower brightness so we can look at it (range: 1-255)
+  strip.setBrightness(64);
 }
 
 int      head = 0, tail = -10;
