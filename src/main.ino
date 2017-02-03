@@ -9,7 +9,7 @@
 #include <SPI.h>
 
 // SPI Pins
-#define USE_SPI_PINS true
+#define USE_SPI_PINS false
 #define FEATHER_M0_SPI_SCK_PIN  24
 #define FEATHER_M0_SPI_MOSI_PIN 23
 #define FEATHER_M0_SPI_MISO_PIN 22
