@@ -8,23 +8,32 @@
 #include <Adafruit_DotStar.h>
 #include <SPI.h>
 
-// Constants
-#define NUMPIXELS 144 // Number of LEDs in strip
+// SPI Pins
+#define USE_SPI_PINS true
+#define FEATHER_M0_SPI_SCK_PIN  24
+#define FEATHER_M0_SPI_MOSI_PIN 23
+#define FEATHER_M0_SPI_MISO_PIN 22
 
-// Pins
-#define DATAPIN    13
-#define CLOCKPIN   11
+// LED Strip
+#define NUMPIXELS 144
+#define CLOCKPIN  USE_SPI_PINS ? FEATHER_M0_SPI_SCK_PIN  : 11 // yellow on strip (grey)
+#define DATAPIN   USE_SPI_PINS ? FEATHER_M0_SPI_MOSI_PIN : 13 // green on strip (purple)
 
+#if !USE_SPI_PINS
 // The last parameter is optional -- this is the color data order of the
 // DotStar strip, which has changed over time in different production runs.
 // Your code just uses R,G,B colors, the library then reassigns as needed.
 // Default is DOTSTAR_BRG, so change this if you have an earlier strip.
 Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
-
-// TODO: Should we use this instead? What are the SPI pins for our board?
+#else
 // Hardware SPI is a little faster, but must be wired to specific pins
 // (Arduino Uno = pin 11 for data, 13 for clock, other boards are different).
-// Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DOTSTAR_BRG);
+//       | Board       | SCK | MOSI | MISO |
+//       |-------------|-----|------|------|
+//       | Feather M0  | 24  | 23   | 22   |
+//       | Arduino Uno | 13  | 11   | 12   |
+Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DOTSTAR_BRG);
+#endif
 
 void setup() {
   strip.begin(); // Initialize pins for output
