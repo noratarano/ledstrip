@@ -41,7 +41,7 @@ void setup() {
 }
 
 int      head = 0, tail = -10;
-uint32_t color = 0xff0000;
+uint32_t color = 0xFF0000;
 
 void loop() {
   // Our loop
