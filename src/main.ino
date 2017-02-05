@@ -1,12 +1,13 @@
+#line 2 "main.ino"
 // Simple strand test for Adafruit Dot Star RGB LED strip.
 // This is a basic diagnostic tool, NOT a graphics demo...helps confirm
 // correct wiring and tests each pixel's ability to display red, green
 // and blue and to forward data down the line.  By limiting the number
 // and color of LEDs, it's reasonably safe to power a couple meters off
 // the Arduino's 5V pin.  DON'T try that with other code!
-
 #include <Adafruit_DotStar.h>
 #include <SPI.h>
+#include <WiFi101.h>
 
 // SPI Pins
 #define USE_SPI_PINS false
@@ -18,6 +19,14 @@
 #define NUMPIXELS 144
 #define CLOCKPIN  USE_SPI_PINS ? FEATHER_M0_SPI_SCK_PIN  : 11 // yellow on strip (grey)
 #define DATAPIN   USE_SPI_PINS ? FEATHER_M0_SPI_MOSI_PIN : 13 // green on strip (purple)
+
+#ifndef WIFI_SSID
+#error Provide wifi info with -DWIFI_SSID="foo" -DWIFI_PASS="bar"
+#endif
+
+#ifndef WIFI_PASS
+#error Provide wifi info with -DWIFI_SSID="foo" -DWIFI_PASS="bar"
+#endif
 
 #if !USE_SPI_PINS
 // The last parameter is optional -- this is the color data order of the
@@ -34,6 +43,12 @@ Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_
 //       | Arduino Uno | 13  | 11   | 12   |
 Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DOTSTAR_BRG);
 #endif
+
+// Wifi Setup
+char *ssid = WIFI_SSID,
+     *pass = WIFI_PASS;
+IPAddress ipaddr(10, 0, 0, 22);
+WiFiServer server(7890);
 
 void setup() {
   strip.begin(); // Initialize pins for output
